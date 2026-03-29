@@ -20,7 +20,6 @@ password
 
 if(res.data.message==="Login successful"){
 
-const studentId = res.data.student.id
 
 localStorage.setItem("token",res.data.token)
 localStorage.setItem("userRole","student")
