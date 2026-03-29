@@ -25,7 +25,7 @@ navigate(`/student-dashboard/${student.id}`)
 
 }
 
-},[])
+},[navigate])
 
 return(
 

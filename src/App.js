@@ -24,8 +24,6 @@ import StudentInsights from "./pages/StudentInsights";
 
 function App(){
 
-const role = localStorage.getItem("userRole")
-
 return(
 
 <BrowserRouter>
@@ -42,7 +40,6 @@ return(
 <Route path="/student-performance/:id" element={<StudentPerformance />} />
 <Route path="/student-tasks/:id" element={<StudentTasks />} />
 <Route path="/student-insights/:id" element={<StudentInsights />} />
-
 
 {/* Teacher pages with sidebar */}
 <Route path="/student-signup" element={<StudentSignup/>}/>
@@ -61,5 +58,3 @@ return(
 )
 
 }
-
-export default App
