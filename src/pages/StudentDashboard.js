@@ -99,7 +99,7 @@ useEffect(()=>{
 
 fetchPrediction()
 
-},[fetchPrediction]);
+},[assignments]);
 if(!student){
 return <p>Loading student data...</p>
 }
