@@ -2,72 +2,139 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
-function StudentLogin(){
+function StudentLogin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const [email,setEmail] = useState("")
-const [password,setPassword] = useState("")
+  const navigate = useNavigate();
 
-const navigate = useNavigate()
+  const handleLogin = async () => {
+    try {
+      const res = await API.post("/auth/student-login", {
+        email,
+        password,
+      });
 
-const handleLogin = async () => {
+      if (res.data.message === "Login successful") {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("userRole", "student");
+        localStorage.setItem(
+          "student",
+          JSON.stringify(res.data.student)
+        );
 
-try{
+        navigate(`/student-dashboard/${res.data.student.id}`);
+      }
+    } catch (err) {
+      alert("Invalid login ❌");
+    }
+  };
 
-const res = await API.post("/auth/student-login",{
-email,
-password
-})
+  return (
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h2 style={styles.heading}>🎓 Student Login</h2>
+        <p style={styles.subText}>Welcome back! Please login</p>
 
-if(res.data.message==="Login successful"){
+        <input
+          type="email"
+          placeholder="📧 Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.input}
+        />
 
+        <input
+          type="password"
+          placeholder="🔒 Enter your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.input}
+        />
 
-localStorage.setItem("token",res.data.token)
-localStorage.setItem("userRole","student")
-localStorage.setItem("student",JSON.stringify(res.data.student))
+        <button style={styles.button} onClick={handleLogin}>
+          Login
+        </button>
 
-navigate(`/student-dashboard/${res.data.student.id}`)
-
+        <p style={styles.footerText}>
+          Don’t have an account?{" "}
+          <span
+            style={styles.link}
+            onClick={() => navigate("/student-signup")}
+          >
+            Sign up
+          </span>
+        </p>
+      </div>
+    </div>
+  );
 }
 
-}catch(err){
+export default StudentLogin;
 
-alert("Invalid login")
+/* ================== STYLES ================== */
 
-}
+const styles = {
+  container: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(to right, #6366f1, #3b82f6)",
+  },
 
-}
+  card: {
+    background: "#ffffff",
+    padding: "40px",
+    borderRadius: "16px",
+    width: "350px",
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+  },
 
-return(
+  heading: {
+    marginBottom: "5px",
+    textAlign: "center",
+    color: "#1e293b",
+  },
 
-<div style={{textAlign:"center",marginTop:"120px"}}>
+  subText: {
+    marginBottom: "20px",
+    textAlign: "center",
+    color: "#64748b",
+  },
 
-<h2>Student Login</h2>
+  input: {
+    padding: "12px",
+    marginBottom: "15px",
+    borderRadius: "8px",
+    border: "1px solid #cbd5e1",
+    outline: "none",
+    fontSize: "14px",
+  },
 
-<input
-placeholder="Email"
-value={email}
-onChange={(e)=>setEmail(e.target.value)}
-/>
+  button: {
+    padding: "12px",
+    borderRadius: "8px",
+    border: "none",
+    background: "#3b82f6",
+    color: "white",
+    fontSize: "16px",
+    cursor: "pointer",
+    marginTop: "10px",
+  },
 
-<br/><br/>
+  footerText: {
+    marginTop: "15px",
+    textAlign: "center",
+    fontSize: "14px",
+    color: "#64748b",
+  },
 
-<input
-type="password"
-placeholder="Password"
-value={password}
-onChange={(e)=>setPassword(e.target.value)}
-/>
-
-<br/><br/>
-
-<button onClick={handleLogin}>
-Login
-</button>
-
-</div>
-
-)
-
-}
-
-export default StudentLogin
+  link: {
+    color: "#3b82f6",
+    cursor: "pointer",
+    fontWeight: "500",
+  },
+};
